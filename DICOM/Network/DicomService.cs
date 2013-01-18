@@ -940,6 +940,9 @@ namespace Dicom.Network {
 					pc.SetResult(DicomPresentationContextResult.RejectNoReason);
 			}
 
+            // limit maximum PDU length
+            Association.MaximumPDULength = Math.Min(Association.MaximumPDULength, _options.MaximumPDULength);
+
 			Logger.Log(LogLevel.Info, "{0} -> Association accept:\n{1}", LogID, association.ToString());
 			SendPDU(new AAssociateAC(Association));
 		}

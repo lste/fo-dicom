@@ -94,6 +94,7 @@ namespace Dicom.Network {
 			var assoc = new DicomAssociation(callingAe, calledAe);
 			assoc.MaxAsyncOpsInvoked = _asyncInvoked;
 			assoc.MaxAsyncOpsPerformed = _asyncPerformed;
+            if (Options != null) assoc.MaximumPDULength = Options.MaximumPDULength;
 			foreach (var request in _requests)
 				assoc.PresentationContexts.AddFromRequest(request);
 

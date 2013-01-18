@@ -18,6 +18,7 @@ namespace Dicom.Network {
 			MaxCommandBuffer = 1 * 1024;		//1KB
 			MaxDataBuffer = 1 * 1024 * 1024;	//1MB
 			ThreadPoolLinger = 200;
+            MaximumPDULength = 16 * 1024;           //16KB
 		}
 
 		/// <summary>Write message to log for each P-Data-TF PDU sent or received.</summary>
@@ -49,5 +50,12 @@ namespace Dicom.Network {
 			get;
 			set;
 		}
+
+        /// <summary>Maximum allowed PDU length. If a remote AE requests a longer PDU, the length is limited to this value</summary>
+        public uint MaximumPDULength {
+            get;
+            set;
+        }
+
 	}
 }

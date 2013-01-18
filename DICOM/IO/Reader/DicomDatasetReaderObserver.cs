@@ -13,12 +13,15 @@ namespace Dicom.IO.Reader {
 		private Stack<DicomSequence> _sequences;
 		private DicomFragmentSequence _fragment;
 
-		public DicomDatasetReaderObserver(DicomDataset dataset) {
+		public DicomDatasetReaderObserver(DicomDataset dataset, Encoding encoding = null) {
 			_datasets = new Stack<DicomDataset>();
 			_datasets.Push(dataset);
 
 			_encodings = new Stack<Encoding>();
-			_encodings.Push(DicomEncoding.Default);
+            if (encoding == null)
+			    _encodings.Push(DicomEncoding.Default);
+            else
+                _encodings.Push(encoding);
 
 			_sequences = new Stack<DicomSequence>();
 		}
@@ -58,9 +61,10 @@ namespace Dicom.IO.Reader {
 
 			if (element.Tag == DicomTag.SpecificCharacterSet) {
 				Encoding encoding = DicomEncoding.Default;
-				if (element.Count > 0)
+				if (element.Count > 0) 
 					encoding = DicomEncoding.GetEncoding(element.Get<string>(0));
-				_encodings.Push(encoding);
+                _encodings.Pop();
+                _encodings.Push(encoding);
 			}
 
 			DicomDataset ds = _datasets.Peek();
@@ -82,6 +86,7 @@ namespace Dicom.IO.Reader {
 			sq.Items.Add(item);
 
 			_datasets.Push(item);
+            _encodings.Push(_encodings.Peek());
 		}
 
 		public void OnEndSequenceItem() {

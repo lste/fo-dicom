@@ -18,7 +18,8 @@ namespace Dicom.Network {
 			MaxCommandBuffer = 1 * 1024;		//1KB
 			MaxDataBuffer = 1 * 1024 * 1024;	//1MB
 			ThreadPoolLinger = 200;
-            MaximumPDULength = 16 * 1024;           //16KB
+            MaximumPDULength = 16 * 1024;       //16KB
+            DefaultEncoding = DicomEncoding.Default;
 		}
 
 		/// <summary>Write message to log for each P-Data-TF PDU sent or received.</summary>
@@ -53,6 +54,17 @@ namespace Dicom.Network {
 
         /// <summary>Maximum allowed PDU length. If a remote AE requests a longer PDU, the length is limited to this value</summary>
         public uint MaximumPDULength {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The encoding which is used to decode LO, LT, PN, SH, ST, UT datafields
+        /// This encoding information will be used, if no information is given in the message itself (0008,0005)
+        /// According to the standard, this should be the default encoding, but some crappy implementations send messages 
+        /// in the local encoding without providing the correct information in (0008,0005)
+        /// </summary>
+        public Encoding DefaultEncoding {
             get;
             set;
         }

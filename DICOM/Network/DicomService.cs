@@ -412,7 +412,7 @@ namespace Dicom.Network {
 
 								var reader = new DicomReader();
 								reader.IsExplicitVR = pc.AcceptedTransferSyntax.IsExplicitVR;
-								reader.Read(source, new DicomDatasetReaderObserver(_dimse.Dataset));
+								reader.Read(source, new DicomDatasetReaderObserver(_dimse.Dataset, (Options == null)?null:Options.DefaultEncoding));
 
 								_dimseStream = null;
 							} else {
